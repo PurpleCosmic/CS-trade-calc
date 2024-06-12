@@ -1,11 +1,14 @@
-from marketdata import get_item_data
+from fetch_item_prices import get_price, get_item_prices
 import re
+import time
 
 FILENAME = "skinsdb.csv"
 HEADER = "skinName,minFloat,maxFloat,collection,grade,fnValue,mwValue,ftValue,wwValue,bsValue,fnValue_st,mwValue_st,ftValue_st,wwValue_st,bsValue_st"
 
 
 def update_data():
+    item_price_dict = get_item_prices()
+
     with open(FILENAME+"1.csv", 'a', encoding="UTF-8") as writefile:
         with open(FILENAME, 'r', encoding="UTF-8") as datafile:
             for line in datafile:
@@ -19,9 +22,10 @@ def update_data():
 
                     for i in range(2):
                         for wear in range(5):
-                            result_line += ',' + str(get_item_data(weapon, skin, wear + 1, i)["sell_req"])
+                            result_line += ',' + str(get_price(weapon, skin, wear + 1, i, item_price_dict))
 
                     result_line.rstrip(',')
+                print(result_line)
                 writefile.write(result_line+'\n')
 
 

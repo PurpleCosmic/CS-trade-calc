@@ -1,5 +1,4 @@
 import requests
-import re
 
 FILENAME = "skinsdb.csv"
 LINK = "https://market.csgo.com/api/v2/prices/EUR.json"
@@ -10,7 +9,7 @@ def get_item_prices():
     return {i['market_hash_name']: float(i['price']) for i in items}
 
 
-wearToName = {
+wear_dict = {
     1: "Factory New",
     2: "Minimal Wear",
     3: "Field-Tested",
@@ -23,13 +22,17 @@ def get_hash_name(weapon, skin, wear, stat):
     res = ""
     if stat == 1:
         res = "StatTrak™ " + res
-    res += f"{weapon} | {skin} ({wearToName[wear]})"
+    res += f"{weapon} | {skin} ({wear_dict[wear]})"
     return res
 
 
 def get_price(weapon, skin, wear, stat, prices):
-    return prices[get_hash_name(weapon, skin, wear, stat)]
+    hash_name = get_hash_name(weapon, skin, wear, stat)
+    if hash_name in prices:
+        return prices[hash_name]
+    else:
+        return 0
 
 
 if __name__ == "__main__":
-    print(get_price("P2000", "Obsidian", 1, 1, get_item_prices()))
+    print(get_price("P250", "Gunsmoke", 2, 0, get_item_prices()))
