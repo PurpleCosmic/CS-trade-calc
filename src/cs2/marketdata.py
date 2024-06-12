@@ -15,7 +15,7 @@ def get_hashname(item, skin, wear, stat):
 
 def get_nameid(hashname):
     html = requests.get(f"https://steamcommunity.com/market/listings/730/{hashname}").text
-    if "There are no listings for this item." in html:
+    if 'Market_LoadOrderSpread( ' not in html:
         return "Unavailable"
     else:
         nameid = html.split('Market_LoadOrderSpread( ')[1]
@@ -41,3 +41,7 @@ def item_data(hashname):
         return out
     else:
         return {"buy_req": 0, "sell_req": 0, "volume": 0}
+
+
+def get_item_data(item, skin, wear, stat):
+    return item_data(get_hashname(item, skin, wear, stat))
