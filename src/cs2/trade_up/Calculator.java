@@ -23,10 +23,13 @@ public class Calculator {
     private Map<SkinCollection, Integer> inputBallots;
     private Map<SkinCollection, Integer> outputBallots;
 
+    private Map<SkinCollection, Integer> outputCollectionSizes;
+
 
 
     public Calculator(List<Skin> input) {
         this.input = input;
+        this.outputCollectionSizes = new HashMap<>();
         calculate();
     }
 
@@ -42,6 +45,7 @@ public class Calculator {
     }
 
     public void displayResults() {
+        System.out.println("=========================================================");
         System.out.println("Input: ");
         System.out.println("------------------------------------");
         for (Skin skin : input) {
@@ -53,7 +57,7 @@ public class Calculator {
         for (SkinInfo skin : output) {
             float outputFloat = skin.getOutputFloat(averageFloat);
             Condition cond = Condition.get(outputFloat);
-            System.out.println(STR."Name: \{skin.name()}, Collection: \{skin.collection()}, Value: \{skin.getValue(cond)}, Grade: \{skin.grade()} Float: \{outputFloat}, Wear: \{cond}, Profit: \{skin.getValue(cond) - inputValue}, Chance: \{calculateProbability(skin) *100}%");
+            System.out.println(STR."Name: \{skin.name()}, Collection: \{skin.collection()}, Value: \{skin.getValue(cond)}, Grade: \{skin.grade()} Float: \{outputFloat}, Wear: \{cond}, Profit: \{skin.getValue(cond) - inputValue}, Chance: \{calculateProbability(skin) * 100}%");
         }
         System.out.println("------------------------------------");
         System.out.println("Stats: ");
@@ -66,6 +70,7 @@ public class Calculator {
         System.out.println(STR."Min Profit: $\{minProfit}");
         System.out.println(STR."Average Profit: $\{averageProfit}");
         System.out.println(STR."Chance For Profit: \{chanceForProfit * 100}%");
+        System.out.println("=================================================");
     }
 
     private float calculateOutputStats() {
@@ -112,6 +117,8 @@ public class Calculator {
         for (SkinInfo skin : SkinDB.get().values()) {
             if (inputBallots.containsKey(skin.collection()) && skin.grade() == outputGrade) {
                 l.add(skin);
+                outputCollectionSizes.putIfAbsent(skin.collection(), 0);
+                outputCollectionSizes.put(skin.collection(), outputCollectionSizes.get(skin.collection()) + 1);
             }
         }
         return l;
@@ -137,6 +144,7 @@ public class Calculator {
     }
 
     public float calculateProbability(SkinInfo info) {
-        return (inputBallots.get(info.collection())/10.0f) / outputBallots.get(info.collection());
+        float caseProb = ((inputBallots.get(info.collection())/10.0f) / outputBallots.get(info.collection()));
+        return caseProb / (float) outputCollectionSizes.get(info.collection());
     }
 }

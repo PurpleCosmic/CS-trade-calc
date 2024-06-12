@@ -27,13 +27,25 @@ public class SkinDB {
         prices.put(Condition.BATTLE_SCARRED, Float.parseFloat(values.get(9)));
 
         EnumMap<Condition, Float> statPrices = new EnumMap<>(Condition.class);
-        prices.put(Condition.FACTORY_NEW, Float.parseFloat(values.get(10)));
-        prices.put(Condition.MINIMAL_WEAR, Float.parseFloat(values.get(11)));
-        prices.put(Condition.FIELD_TESTED, Float.parseFloat(values.get(12)));
-        prices.put(Condition.WELL_WORN, Float.parseFloat(values.get(13)));
-        prices.put(Condition.BATTLE_SCARRED, Float.parseFloat(values.get(14)));
+        statPrices.put(Condition.FACTORY_NEW, Float.parseFloat(values.get(10)));
+        statPrices.put(Condition.MINIMAL_WEAR, Float.parseFloat(values.get(11)));
+        statPrices.put(Condition.FIELD_TESTED, Float.parseFloat(values.get(12)));
+        statPrices.put(Condition.WELL_WORN, Float.parseFloat(values.get(13)));
+        statPrices.put(Condition.BATTLE_SCARRED, Float.parseFloat(values.get(14)));
 
-        return new SkinInfo(name, minFloat, maxFloat, collection, grade, prices, statPrices);
+        boolean isAvailable = false;
+        for (float price : prices.values()) {
+            if (price != 0) {
+               isAvailable = true;
+               break;
+           }
+        }
+
+        if (isAvailable) {
+            return new SkinInfo(name, minFloat, maxFloat, collection, grade, prices, statPrices);
+        } else {
+            return null;
+        }
     }
 
     private static Map<String, SkinInfo> init() {
@@ -44,7 +56,9 @@ public class SkinDB {
             String line = reader.readLine();
             while (line != null) {
                 SkinInfo info = convertToInfo(line);
-                map.put(info.name(), info);
+                if (info != null) {
+                    map.put(info.name(), info);
+                }
                 line = reader.readLine();
             }
         } catch (IOException e) {
