@@ -15,10 +15,12 @@ def update_data():
                 line = line.rstrip()
                 result_line = line
                 if "skinName,minFloat" not in line:
-                    line = re.sub(",[^A-Z]*$", "", line)
+                    line = re.sub(r"([A-Z]),[^A-Z]*$", r"\1", line)
                     weapon_skin = line.split("|")
                     weapon = weapon_skin[0].strip()
                     skin = weapon_skin[1][:weapon_skin[1].find(",")].strip()
+
+                    result_line = line
 
                     for i in range(2):
                         for wear in range(5):
