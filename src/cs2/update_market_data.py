@@ -1,6 +1,5 @@
 from fetch_item_prices import get_price, get_item_prices
 import re
-import time
 
 FILENAME = "skinsdb.csv"
 HEADER = "skinName,minFloat,maxFloat,collection,grade,fnValue,mwValue,ftValue,wwValue,bsValue,fnValue_st,mwValue_st,ftValue_st,wwValue_st,bsValue_st"

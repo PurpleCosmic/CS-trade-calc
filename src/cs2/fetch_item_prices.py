@@ -31,8 +31,10 @@ def get_price(weapon, skin, wear, stat, prices):
     if hash_name in prices:
         return prices[hash_name]
     else:
+        print(weapon, skin)
         return 0
 
 
 if __name__ == "__main__":
-    print(get_price("P250", "Gunsmoke", 2, 0, get_item_prices()))
+    print(get_item_prices())
+    print(get_price("Negev", "Anodized Navy", 1, 0, get_item_prices()))
