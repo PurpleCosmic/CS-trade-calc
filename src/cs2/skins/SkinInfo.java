@@ -76,11 +76,14 @@ public class SkinInfo {
                 Objects.equals(this.stattrackValues, that.stattrackValues);
     }
 
+    public float getValue(Condition condition) {
+        return values().get(condition);
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(name, minFloat, maxFloat, collection, grade, values, stattrackValues);
     }
-
     @Override
     public String toString() {
         return "Skin[" +

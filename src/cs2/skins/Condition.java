@@ -13,8 +13,8 @@ public enum Condition {
     private static final Map<Float, Condition> floatMap = Map.of(
             0.07f, FACTORY_NEW,
             0.15f, MINIMAL_WEAR,
-            0.37f, FIELD_TESTED,
-            0.44f, WELL_WORN,
+            0.38f, FIELD_TESTED,
+            0.45f, WELL_WORN,
             1.0f, BATTLE_SCARRED
     );
 

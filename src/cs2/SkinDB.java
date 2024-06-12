@@ -56,4 +56,8 @@ public class SkinDB {
     public static Map<String, SkinInfo> get() {
         return skinDB;
     }
+
+    public static void main(String[] args) {
+        System.out.println(get());
+    }
 }
