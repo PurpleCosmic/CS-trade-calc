@@ -15,22 +15,29 @@ def get_hashname(item, skin, wear, stat):
 
 def get_nameid(hashname):
     html = requests.get(f"https://steamcommunity.com/market/listings/730/{hashname}").text
-    nameid = html.split('Market_LoadOrderSpread( ')[1]
-    nameid = nameid.split(' ')[0]
-    return int(nameid)
+    if "There are no listings for this item." in html:
+        return "Unavailable"
+    else:
+        nameid = html.split('Market_LoadOrderSpread( ')[1]
+        nameid = nameid.split(' ')[0]
+        return int(nameid)
+
 
 def item_data(hashname):
     nameid = str(get_nameid(hashname))
-    out = {}
-    order_data = (requests.get(
-        f"https://steamcommunity.com/market/itemordershistogram?country=US&currency=1&language=english&two_factor=0&item_nameid={nameid}").text)
-    out["buy_req"] = int((order_data.split('\"highest_buy_order":\"')[1]).split('\"')[0]) / 100
-    out["sell_req"] = int((order_data.split('\"lowest_sell_order":\"')[1]).split('\"')[0]) / 100
-    try:
-        out["volume"] = int(((requests.get(
-            f"https://steamcommunity.com/market/priceoverview/?appid=730&currency=1&market_hash_name={hashname}").text).split(
-            'volume\":"')[1]).split('\"')[0])
-    except:
-        ''
-    out["nameid"] = nameid
-    return out
+    if nameid != "Unavailable":
+        out = {}
+        order_data = (requests.get(
+            f"https://steamcommunity.com/market/itemordershistogram?country=US&currency=1&language=english&two_factor=0&item_nameid={nameid}").text)
+        out["buy_req"] = int((order_data.split('\"highest_buy_order":\"')[1]).split('\"')[0]) / 100
+        out["sell_req"] = int((order_data.split('\"lowest_sell_order":\"')[1]).split('\"')[0]) / 100
+        try:
+            out["volume"] = int(((requests.get(
+                f"https://steamcommunity.com/market/priceoverview/?appid=730&currency=1&market_hash_name={hashname}").text).split(
+                'volume\":"')[1]).split('\"')[0])
+        except:
+            ''
+        out["nameid"] = nameid
+        return out
+    else:
+        return {"buy_req": 0, "sell_req": 0, "volume": 0}
