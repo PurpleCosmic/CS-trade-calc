@@ -76,8 +76,8 @@ public class SkinInfo {
                 Objects.equals(this.stattrackValues, that.stattrackValues);
     }
 
-    public float getValue(Condition condition) {
-        return values().get(condition);
+    public float getValue(Condition condition, boolean stattrack) {
+        return stattrack ? stattrackValues().get(condition) : values().get(condition);
     }
 
     @Override

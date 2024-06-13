@@ -37,13 +37,13 @@ public class TradeUpRandomizer {
             } while (info.grade() != grade || ! hasOutput(Grade.getNextGrade(grade), info.collection()));
             for (int i = 0; i < 10 && !isValid; i++) {
                 floatValue = getRandomFloat(info);
-                if (info.getValue(Condition.get(floatValue)) != 0) {
+                if (info.values().get(Condition.get(floatValue)) != 0) {
                     isValid = true;
                 }
             }
         } while (! isValid);
 
-        return new Skin(info, floatValue);
+        return new Skin(info, floatValue, false);
     }
 
     public static boolean hasOutput(Grade grade, SkinCollection collection) {

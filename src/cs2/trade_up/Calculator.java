@@ -10,6 +10,7 @@ public class Calculator {
     public List<SkinInfo> output;
 
     private Grade outputGrade;
+    private final boolean isStatTrack;
     private float averageFloat;
     private float inputValue;
     private float outputAverageValue;
@@ -27,6 +28,7 @@ public class Calculator {
 
     public Calculator(List<Skin> input) {
         this.input = input;
+        isStatTrack = input.getFirst().statTrack();
         calculate();
     }
 
@@ -55,7 +57,7 @@ public class Calculator {
         System.out.println("Input: ");
         System.out.println("------------------------------------");
         for (Skin skin : input) {
-            System.out.println(STR."Name: \{skin.info().name()}, Collection: \{skin.info().collection()}, Price: \{skin.info().getValue(skin.getCondition())}, Grade: \{skin.info().grade()}, Float: \{skin.floatValue()}, Wear: \{skin.getCondition()}");
+            System.out.println(STR."Name: \{skin.info().name()}, Collection: \{skin.info().collection()}, Price: \{skin.getValue()}, Grade: \{skin.info().grade()}, Float: \{skin.floatValue()}, Wear: \{skin.getCondition()}");
         }
         System.out.println("------------------------------------");
         System.out.println("Output: ");
@@ -65,7 +67,7 @@ public class Calculator {
             float outputFloat = skin.getOutputFloat(averageFloat);
             Condition cond = Condition.get(outputFloat);
             totalChance += calculateProbability(skin);
-            System.out.println(STR."Name: \{skin.name()}, Collection: \{skin.collection()}, Value: \{skin.getValue(cond)}, Grade: \{skin.grade()} Float: \{outputFloat}, Wear: \{cond}, Profit: \{skin.getValue(cond) - inputValue}, Chance: \{calculateProbability(skin) * 100}%");
+            System.out.println(STR."Name: \{skin.name()}, Collection: \{skin.collection()}, Value: \{skin.getValue(cond, isStatTrack)}, Grade: \{skin.grade()} Float: \{outputFloat}, Wear: \{cond}, Profit: \{skin.getValue(cond, isStatTrack) - inputValue}, Chance: \{calculateProbability(skin) * 100}%");
         }
         System.out.println(totalChance);
         System.out.println("------------------------------------");
@@ -87,9 +89,9 @@ public class Calculator {
         for (SkinInfo skin : output) {
             float outputFloat = skin.getOutputFloat(averageFloat);
             Condition condition = Condition.get(outputFloat);
-            res += calculateProbability(skin) * skin.getValue(condition);
+            res += calculateProbability(skin) * skin.getValue(condition, isStatTrack);
 
-            float profit = skin.getValue(condition) - inputValue;
+            float profit = skin.getValue(condition, isStatTrack) - inputValue;
             if (profit > 0) {
                 chanceForProfit += calculateProbability(skin);
             }
@@ -107,7 +109,7 @@ public class Calculator {
     public float getInputValue() {
         float res = 0;
         for (Skin skin : input) {
-            res += skin.info().getValue(skin.getCondition());
+            res += skin.getValue();
         }
         return res;
     }
