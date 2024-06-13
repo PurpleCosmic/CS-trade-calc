@@ -3,12 +3,11 @@ package cs2.trade_up;
 import cs2.SkinDB;
 import cs2.skins.*;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class TradeUpOptimizer {
+public class TradeUpRandomizer {
     public static List<Skin> getRandomSkins() {
         List<Skin> skins = new ArrayList<>();
         Grade grade = Grade.getRandomUpgradable();
@@ -56,8 +55,7 @@ public class TradeUpOptimizer {
         return false;
     }
 
-    public static void main(String[] args) {
-        System.out.println(SkinDB.get());
+    public static void run(int n) {
         boolean gotProfitable = false;
 
         float maxProf = -999999999;
@@ -65,10 +63,10 @@ public class TradeUpOptimizer {
         float maxChance = -1;
         Calculator maxChanceCalc = null;
 
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < n; i++) {
             Calculator calc = new Calculator(getRandomSkins());
-            if (calc.averageProfit > maxProf) {
-                maxProf = calc.averageProfit;
+            if (calc.averageProfit/calc.getInputValue() > maxProf) {
+                maxProf = calc.averageProfit/calc.getInputValue();
                 maxProfCalc = calc;
             }
             if (calc.chanceForProfit > maxChance) {
@@ -89,6 +87,9 @@ public class TradeUpOptimizer {
         if (maxChanceCalc != null) {
             maxChanceCalc.displayResults();
         }
+    }
 
+    public static void main(String[] args) {
+        run(10000);
     }
 }
