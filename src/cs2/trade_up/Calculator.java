@@ -62,14 +62,11 @@ public class Calculator {
         System.out.println("------------------------------------");
         System.out.println("Output: ");
         System.out.println("------------------------------------");
-        float totalChance = 0;
         for (SkinInfo skin : output) {
             float outputFloat = skin.getOutputFloat(averageFloat);
             Condition cond = Condition.get(outputFloat);
-            totalChance += calculateProbability(skin);
             System.out.println(STR."Name: \{skin.name()}, Collection: \{skin.collection()}, Value: \{skin.getValue(cond, isStatTrack)}, Grade: \{skin.grade()} Float: \{outputFloat}, Wear: \{cond}, Profit: \{skin.getValue(cond, isStatTrack) - inputValue}, Chance: \{calculateProbability(skin) * 100}%");
         }
-        System.out.println(totalChance);
         System.out.println("------------------------------------");
         System.out.println("Stats: ");
         System.out.println("------------------------------------");

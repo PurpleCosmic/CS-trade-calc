@@ -10,4 +10,9 @@ public record Skin(SkinInfo info, float floatValue, boolean statTrack) {
     public float getValue() {
         return statTrack ? info().stattrackValues().get(getCondition()) : info.values().get(getCondition());
     }
+
+    @Override
+    public String toString() {
+        return "Skin[name="+info.name()+", StatTrack="+statTrack+", Condition="+getCondition()+", floatValue="+floatValue+"]";
+    }
 }

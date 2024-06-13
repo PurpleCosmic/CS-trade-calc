@@ -71,6 +71,21 @@ public class SkinDB {
         return skinDB;
     }
 
+    public static Optional<SkinInfo> getCheapestOption(SkinCollection collection, Grade grade, Condition condition, boolean statTrack) {
+        float cheapestPrice = 99999999999999999999999999999999999f;
+        Optional<SkinInfo> cheapestSkin = Optional.empty();
+        for (SkinInfo info : get().values()) {
+            if (info.collection() == collection && info.grade() == grade) {
+                float value = statTrack ? info.stattrackValues().get(condition) : info.values().get(condition);
+                if (cheapestSkin.isEmpty() || cheapestPrice > value) {
+                    cheapestPrice = value;
+                    cheapestSkin = Optional.of(info);
+                }
+            }
+        }
+        return cheapestSkin;
+    }
+
     public static void main(String[] args) {
         System.out.println(get());
     }
