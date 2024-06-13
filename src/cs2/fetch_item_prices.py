@@ -1,7 +1,7 @@
 import requests
 
 FILENAME = "skinsdb.csv"
-LINK = "https://market.csgo.com/api/v2/prices/EUR.json"
+LINK = "https://market.csgo.com/api/v2/prices/USD.json"
 
 
 def get_item_prices():
