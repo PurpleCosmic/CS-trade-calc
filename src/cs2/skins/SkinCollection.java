@@ -56,5 +56,12 @@ public enum SkinCollection {
     OFFICE,
     ESPORTS_2013,
     ASSAULT,
-    ARMS_DEAL
+    ARMS_DEAL,
+    CONTROL,
+    HAVOC,
+    ANCIENT,
+    X_RAY,
+    ST_MARC,
+    CANALS,
+    FRACTURE
 }
